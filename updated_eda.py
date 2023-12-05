@@ -51,23 +51,28 @@ if __name__=="__main__":
     indicator_count = df["Indicator Code"].value_counts()
     filtered_indicators = indicator_count[indicator_count >= 230]
 
-    print(type(filtered_indicators))
+    # filtered_indicators = filtered_indicators.to_string()
+    # for i in "0123456789":
+    #     filtered_indicators = filtered_indicators.replace(i, "").replace(" ", "")
+    #
+    # filtered_indicators = filtered_indicators.split("\n")
+    # print(filtered_indicators)
 
     drop_columns(df)
 
     df = pivot(df)
-
     print(f' after pivoting {df.shape}')
 
-    for column in df.columns:
-        if column not in filtered_indicators and not "Country Name":
-            df.drop(column, inplace=True)
+    print("filtering")
+    for column in tqdm(df.columns):
+        if column not in filtered_indicators and column != "Country Name" and column != "Year":
+            df.drop(column, inplace=True, axis=1)
 
 
     temp_cols = df.columns.tolist()
     new_cols = temp_cols[-1:] + temp_cols[:-1]
     df = df[new_cols]
     print(f' after filtering {df.shape}')
-    df = df.dropna(axis=1)
-    print(f' after dropna {df.shape}')
+    df = df.dropna(axis=)
+    # print(f' after dropna {df.shape}')
     df.to_csv("pivot.csv")
