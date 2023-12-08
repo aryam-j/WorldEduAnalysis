@@ -127,9 +127,6 @@ if __name__=="__main__":
     ### CREATING CODE TO NAME DICTIONARY ###
     indicator_dict = indicator_code_2_name(df)
 
-    ### CREATING A LIST OF INDICATORS TO FILTER ###
-    # filtered_indicators = indicator_count[indicator_count < 216] #30
-    # filtered_indicators = filtered_indicators.index.to_list()
 
     ### REMOVING UNNECESSARY COLUMNS ###
     drop_columns(df)
@@ -138,31 +135,27 @@ if __name__=="__main__":
     df = pivot(df)
     print(f' after pivoting {df.shape}')
 
-    ### FILTERING INDICATORS ###
-    # print("filtering")
-    # df.drop(columns=filtered_indicators, inplace=True, axis=1)
-
     ### CHANGING "YEAR" COLUMN POSITION ###
     temp_cols = df.columns.tolist()
     new_cols = temp_cols[-1:] + temp_cols[:-1]
     df = df[new_cols]
 
-    ### DROPPING ROWS WITH NA VALUE ###
-    # print(f' after filtering {df.shape}')
-    # df = df.dropna()
-    # print(f' after dropna {df.shape}')
 
     ### FILTERING CODE TO INDICATOR NAME DICTIONARY ###
-    keys_to_delete = []
-    for indicator_key in indicator_dict.keys():
-        if "literacy" not in indicator_dict[indicator_key].lower() and "gdp" not in indicator_dict[indicator_key].lower() and "illiterate" not in indicator_dict[indicator_key].lower():
-            keys_to_delete.append(indicator_key)
-    print(keys_to_delete)
-    df.drop(columns=keys_to_delete, axis=1, inplace=True)
-    for key in keys_to_delete:
-        del indicator_dict[key]
-    print(indicator_dict)
-    print(df.columns)
+    # keys_to_delete = []
+    # for indicator_key in indicator_dict.keys():
+    #     if "literacy" not in indicator_dict[indicator_key].lower() \
+    #             and "gdp" not in indicator_dict[indicator_key].lower() \
+    #             and "gni" not in indicator_dict[indicator_key].lower() \
+    #             and "illiterate" not in indicator_dict[indicator_key].lower():
+    #         keys_to_delete.append(indicator_key)
+    #
+    # print(keys_to_delete)
+    # df.drop(columns=keys_to_delete, axis=1, inplace=True)
+    # for key in keys_to_delete:
+    #     del indicator_dict[key]
+    # print(indicator_dict)
+    # print(df.columns)
 
     ### CREATING A NEW FILE ###
     df.to_csv("pivot.csv")
@@ -171,19 +164,32 @@ if __name__=="__main__":
 
     df = df.drop(columns="Year")
 
-    correlation_matrix = df.corr()
-    plt.figure(figsize=(15, 10))
-    sb.heatmap(df.corr(), cmap='coolwarm')
-    plt.show()
-    print(correlation_matrix)
+    correlation_matrix = df.corr()  #min_periods=50, numeric_only=True
+    # plt.figure(figsize=(15, 10))
+    # sb.heatmap(df.corr(), cmap='coolwarm')
+    # # plt.show()
+    # print(correlation_matrix)
 
-    with open(r"C:\Users\aryam\OneDrive\Desktop\GDP_Literacy_correlations.txt", 'w') as f:
+    # with open(r"C:\Users\aryam\OneDrive\Desktop\0.95 correlation.txt", 'w') as f:
+    #     print("writing")
+    #     for i in tqdm(range(len(correlation_matrix.columns))):
+    #         for j in range(i):
+    #             if abs(correlation_matrix.iloc[i, j]) >= 0.7 and abs(correlation_matrix.iloc[i, j]) <= 0.8 or abs(correlation_matrix.iloc[i, j]) <= -0.7 and abs(correlation_matrix.iloc[i, j]) >= -0.8:
+    #                 f.write(
+    #                     f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}\n')
+
+    with open(r"C:\Users\aryam\OneDrive\Desktop\0.95 correlation.txt", 'w') as f:
         print("writing")
+        correlations_found = False  # Flag to check if any correlations are found
         for i in tqdm(range(len(correlation_matrix.columns))):
             for j in range(i):
-                if abs(correlation_matrix.iloc[i, j]) > 0.7 or abs(correlation_matrix.iloc[i, j]) < - 0.7:
-                    f.write(
-                        f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}\n')
+                if abs(correlation_matrix.iloc[i, j]) >= 0.7 and abs(correlation_matrix.iloc[i, j]) <= 0.8 or abs(
+                        correlation_matrix.iloc[i, j]) <= -0.7 and abs(correlation_matrix.iloc[i, j]) >= -0.8:
+                    correlation = correlation_matrix.iloc[i, j]
+                    indicator_i = indicator_dict[correlation_matrix.columns[i]]
+                    indicator_j = indicator_dict[correlation_matrix.columns[j]]
+                    f.write(f'{indicator_i} || {indicator_j} --> {correlation}\n')
+                    correlations_found = True  # Set flag to True if any correlations are found
 
-    sb.boxplot(x=correlation_matrix["UIS.LP.AG15T99.F"], y=correlation_matrix["NY.GDP.MKTP.PP.KD"])
-    plt.show()
+        if not correlations_found:
+            f.write("No correlations found within the specified range.")
