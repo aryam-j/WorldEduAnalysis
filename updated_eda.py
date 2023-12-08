@@ -183,8 +183,9 @@ if __name__=="__main__":
         correlations_found = False  # Flag to check if any correlations are found
         for i in tqdm(range(len(correlation_matrix.columns))):
             for j in range(i):
-                if abs(correlation_matrix.iloc[i, j]) >= 0.7 and abs(correlation_matrix.iloc[i, j]) <= 0.8 or abs(
-                        correlation_matrix.iloc[i, j]) <= -0.7 and abs(correlation_matrix.iloc[i, j]) >= -0.8:
+                if abs(correlation_matrix.iloc[i, j]) >= 0.9 or abs(
+                        correlation_matrix.iloc[i, j]) <= -0.9:
+                    print("yeahhhhhhhhhhhhhhhhhhhhhhhhhhh")
                     correlation = correlation_matrix.iloc[i, j]
                     indicator_i = indicator_dict[correlation_matrix.columns[i]]
                     indicator_j = indicator_dict[correlation_matrix.columns[j]]
