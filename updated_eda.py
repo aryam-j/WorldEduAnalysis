@@ -170,27 +170,9 @@ if __name__=="__main__":
     # # plt.show()
     # print(correlation_matrix)
 
-    # with open(r"C:\Users\aryam\OneDrive\Desktop\0.95 correlation.txt", 'w') as f:
-    #     print("writing")
-    #     for i in tqdm(range(len(correlation_matrix.columns))):
-    #         for j in range(i):
-    #             if abs(correlation_matrix.iloc[i, j]) >= 0.7 and abs(correlation_matrix.iloc[i, j]) <= 0.8 or abs(correlation_matrix.iloc[i, j]) <= -0.7 and abs(correlation_matrix.iloc[i, j]) >= -0.8:
-    #                 f.write(
-    #                     f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}\n')
-
-    with open(r"C:\Users\aryam\OneDrive\Desktop\0.95 correlation.txt", 'w') as f:
-        print("writing")
-        correlations_found = False  # Flag to check if any correlations are found
+    with open(r"C:\Users\aryam\OneDrive\Desktop\0.95_correlation.txt", 'w') as f:
         for i in tqdm(range(len(correlation_matrix.columns))):
             for j in range(i):
-                if abs(correlation_matrix.iloc[i, j]) >= 0.9 or abs(
-                        correlation_matrix.iloc[i, j]) <= -0.9:
-                    print("yeahhhhhhhhhhhhhhhhhhhhhhhhhhh")
-                    correlation = correlation_matrix.iloc[i, j]
-                    indicator_i = indicator_dict[correlation_matrix.columns[i]]
-                    indicator_j = indicator_dict[correlation_matrix.columns[j]]
-                    f.write(f'{indicator_i} || {indicator_j} --> {correlation}\n')
-                    correlations_found = True  # Set flag to True if any correlations are found
-
-        if not correlations_found:
-            f.write("No correlations found within the specified range.")
+                if abs(correlation_matrix.iloc[i, j]) >= 0.9 or abs(correlation_matrix.iloc[i, j]) <= - 0.9:
+                    f.write(
+                        f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}\n')
