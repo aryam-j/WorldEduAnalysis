@@ -164,15 +164,15 @@ if __name__=="__main__":
 
     df = df.drop(columns="Year")
 
-    correlation_matrix = df.corr()  #min_periods=50, numeric_only=True
+    # correlation_matrix = df.corr(min_periods=50, numeric_only=True)  #
     # plt.figure(figsize=(15, 10))
     # sb.heatmap(df.corr(), cmap='coolwarm')
     # # plt.show()
     # print(correlation_matrix)
 
-    with open(r"C:\Users\aryam\OneDrive\Desktop\0.95_correlation.txt", 'w') as f:
-        for i in tqdm(range(len(correlation_matrix.columns))):
-            for j in range(i):
-                if abs(correlation_matrix.iloc[i, j]) >= 0.9 or abs(correlation_matrix.iloc[i, j]) <= - 0.9:
-                    f.write(
-                        f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}\n')
+    # with open(r"C:\Users\aryam\OneDrive\Desktop\0.95_correlation.txt", 'w') as f:
+    #     for i in tqdm(range(len(correlation_matrix.columns))):
+    #         for j in range(i):
+    #             if abs(correlation_matrix.iloc[i, j]) > 0.75 and abs(correlation_matrix.iloc[i, j]) <= 0.8:
+    #                 f.write(
+    #                     f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}\n')
