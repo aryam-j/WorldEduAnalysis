@@ -1,5 +1,6 @@
 import pandas as pd
-import seaborn as sb
+import seaborn
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 
@@ -10,13 +11,31 @@ def get_countries_with_income(income):
     return set(country_df[country_df["Income Group"].isin(income)]["Table Name"].to_list())
 
 country_df = pd.read_csv('EdStatsCountry.csv')
-print(country_df["Income Group"].unique())
 
 
 if __name__=="__main__":
     df = pd.read_csv("pivot.csv")
-    # COL_1, COL_2, COL_3 = "SE.ADT.LITR.ZS", "NY.GDP.PCAP.PP.KD", "Country Name" ### Literacy rate and GDP PPP
-    # COL_1, COL_2, COL_3 = "UIS.LPP.AG15T99", "SE.ADT.LITR.MA.ZS", "Country Name" ### male literacy and female literacy
+
+
+    new_df = df[["SE.ADT.LITR.ZS", "NY.GDP.PCAP.PP.KD", "Country Name"]]
+
+    sns.scatterplot(x="SE.ADT.LITR.ZS", y="NY.GDP.PCAP.PP.KD", data=new_df)
+    plt.xlabel("Literacy Rate")
+    plt.ylabel("GDP PPP")
+    plt.title("Literacy rate and GDP PPP")
+    plt.show()
+
+# COL_1, COL_2, COL_3 = "UIS.LPP.AG15T99", "SE.ADT.LITR.MA.ZS", "Country Name" ###
+    new_df1 = df[["UIS.LPP.AG15T99", "SE.ADT.LITR.MA.ZS"]]
+
+    sns.scatterplot(x="UIS.LPP.AG15T99", y="SE.ADT.LITR.MA.ZS", data=new_df1)
+    plt.xlabel("Literacy Rate")
+    plt.ylabel("GDP PPP")
+    plt.title("male literacy and female literacy")
+    plt.show()
+
+
+
     # COL_1, COL_2, COL_3 = "SE.PRM.ENRR", "SE.PRM.CMPT.ZS", "Country Name" ## "Gross enrolment ratio, primary, both sexes (%)" and "Primary completion rate, both sexes (%)"
     # COL_1, COL_2, COL_3 = "SE.PRM.TCHR", "SE.PRM.ENRL.TC.ZS", "Country Name" ##"Teachers in primary education, both sexes (number)" and "Pupil-teacher ratio in primary education (headcount basis)"
     # COL_1, COL_2, COL_3 = "SE.SEC.ENRL.VO.ZS", "UIS.GTVP.23.GPV", "Country Name" ##"Percentage of students in secondary education enrolled in vocational programmes, both sexes (%)" and "Percentage of students in secondary education enrolled in general programmes, both sexes (%)"
@@ -31,17 +50,16 @@ if __name__=="__main__":
     # new_df = new_df[new_df[COL_2] < 500]
     # new_df = new_df[new_df[COL_1] > 80]
 
-
     ######## BARCHART ########
-    # COL_1, COL_2, COL_3 = "UIS.E.1.PR", "UIS.E.1.PU", "Country Name"  ##Bar Chart "Enrolment in primary education, private institutions, both sexes (number)" vs "Enrolment in primary education, public institutions, both sexes (number)" by location
-    # new_df = df[[COL_1, COL_2, COL_3]]
+    # private, public, country = "UIS.E.1.PR", "UIS.E.1.PU", "Country Name"  ##Bar Chart "Enrolment in primary education, private institutions, both sexes (number)" vs "Enrolment in primary education, public institutions, both sexes (number)" by location
+    # new_df = df[[private, public, country]]
     #
     # fig = plt.figure(figsize=(10, 5))
     #
-    # plt.bar(df[COL_3], df[COL_1],
+    # plt.bar(new_df[country], new_df[private],
     #         width=0.4)
-    # plt.bar(df[COL_3], df[COL_2],
-    #         width=0.4, bottom=COL_1)
+    # plt.bar(df[country], df[public],
+    #         width=0.4, bottom=public)
     # plt.xlabel("Countries")
     # plt.ylabel("No. of students enrolled")
     # plt.title("Students enrolled in different courses")
@@ -75,8 +93,8 @@ if __name__=="__main__":
     #
     # lm_grouped_df = new_lm_df[["Year", COL_2, "Spent on Edu"]].groupby("Year").aggregate("sum")
     # lm_grouped_df["% Spent On Edu"] = lm_grouped_df["Spent on Edu"] / lm_grouped_df[COL_2] * 100
-
-    ## low income ##
+    #
+    # # low income ##
     # low_df = df[df["Country Name"].isin(get_countries_with_income(["Low income"]))]
     # new_l_df = low_df[[COL_1, COL_2, COL_3, "Country Name"]]
     # new_l_df.dropna(inplace=True)
@@ -84,50 +102,35 @@ if __name__=="__main__":
     #
     # l_grouped_df = new_l_df[["Year", COL_2, "Spent on Edu"]].groupby("Year").aggregate("sum")
     # l_grouped_df["% Spent On Edu"] = l_grouped_df["Spent on Edu"] / l_grouped_df[COL_2] * 100
-
-    # plt.bar(l_grouped_df.index, l_grouped_df["% Spent On Edu"],
-    #         width=0.4)
-
-    # plt.xlabel("Year")
-    # plt.ylabel("% of expenditure")
-    # plt.title("Government expenditure on education as % of GDP (%) and others")
+    #
+    # combined_df = pd.concat([high_grouped_df["% Spent On Edu"], um_grouped_df["% Spent On Edu"], lm_grouped_df["% Spent On Edu"], l_grouped_df["% Spent On Edu"]], axis=1)
+    # combined_df.columns = ['High', 'Upper Middle', 'Lower Middle', 'Low']
+    #
+    # combined_df_melted = combined_df.melt(var_name='Groups', value_name='Values')
+    # sns.set(style="whitegrid")
+    # sns.barplot(x='Groups', y='Values', data=combined_df_melted, hue='Groups')
+    # plt.title('Grouped Bar Plot of Columns')
+    # plt.xlabel('Income Group')
+    # plt.ylabel('% Spent on Edu')
+    # plt.legend(title='Columns')
     # plt.show()
 
     ######## HISTOGRAM ########
 
-    # COL_1 = "SE.PRM.ENRL.TC.ZS"
-    # plt.hist(df[COL_1])
+    # plt.hist(df["SE.PRM.ENRL.TC.ZS"])
     # plt.xlabel("Pupil-teacher ratio")
     # plt.ylabel("Number of occurrence")
     # plt.title("Pupil-teacher ratio in primary education (headcount basis)")
     # plt.show()
 
-    ######## SCATTER PLOT ########
-
-    # COL_1, COL_2, COL_3 = "SE.PRM.ENRR", "SE.SEC.ENRR", "Year" ##Scatter Plot "Gross enrolment ratio, primary, both sexes (%)" vs "Gross enrolment ratio, secondary, both sexes (%)" over time
-    # new_df = df[[COL_1, COL_2, COL_3]]
-    # print(new_df[[COL_1, COL_2]].corr(method='pearson', min_periods=1000))
-    # print(new_df.describe())
-    # sb.scatterplot(y=new_df[COL_1], x=new_df[COL_2])
-
-    # label_offset = 0.5  # Change this offset value as needed
-    # for idx, row in new_df.iterrows():
-    #     plt.text(row[COL_2] + label_offset, row[COL_1] + label_offset, row[COL_3])
-    #
-    # plt.xlabel(COL_2)
-    # plt.ylabel(COL_1)
-    # plt.show()
-
     ######## BOX PLOT ########
-    COL_1, COL_2, COL_3 = "SE.PRM.ENRR", "SE.SEC.ENRR", "SE.TER.ENRR" ## Scatter Plot "Gross enrolment ratio, primary, both sexes (%)" vs "Gross enrolment ratio, secondary, both sexes (%)"
-
-    new_df = df[[COL_1, COL_2, COL_3]]
-    data = [new_df[COL_1].dropna().values, new_df[COL_2].dropna().values, new_df[COL_3].dropna().values]
-    plt.figure(figsize=(10, 6))
-    plt.boxplot(data, labels=['Primary', 'Secondary', 'Tertiary'])
-    plt.xlabel('Education Levels')
-    plt.ylabel('Enrollment Rate')
-    plt.title('Comparison of Enrollment Rates in Different Education Levels')
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+    # new_df = df[["SE.PRM.ENRR", "SE.SEC.ENRR", "SE.TER.ENRR"]]
+    # data = [new_df["SE.PRM.ENRR"].dropna().values, new_df["SE.SEC.ENRR"].dropna().values, new_df["SE.TER.ENRR"].dropna().values]
+    # plt.figure(figsize=(10, 6))
+    # plt.boxplot(data, labels=['Primary', 'Secondary', 'Tertiary'])
+    # plt.xlabel('Education Levels')
+    # plt.ylabel('Enrollment Rate')
+    # plt.title("Gross enrolment ratio, primary, both sexes (%) vs Gross enrolment ratio, secondary, both sexes (%)")
+    # plt.grid(True)
+    # plt.tight_layout()
+    # plt.show()
