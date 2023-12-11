@@ -38,79 +38,15 @@ def pivot(df):
 
 def indicator_code_2_name(df):
     print("Mapping Indicator name to code..")
-    name_2_code = {}
+    code2name = {}
 
     for _, row in df.iterrows():
-        name_2_code[row["Indicator Code"]] = row["Indicator Name"]
+        code2name[row["Indicator Code"]] = row["Indicator Name"]
 
-    return name_2_code
+    return code2name
 
 
 
-# if __name__=="__main__":
-#
-#     ### LOADING THE DATA ###
-#     ed_stats_data_path = r"C:\Users\aryam\OneDrive\Desktop\EdStatsData.csv"
-#     df = pd.read_csv(ed_stats_data_path)
-#
-#     ### COUNTING THE FREQUENCY OF INDICATORS ###
-#     indicator_count = df["Indicator Code"].value_counts()
-#
-#     ### CREATING CODE TO NAME DICTIONARY ###
-#     indicator_dict = indicator_code_2_name(df)
-#
-#     ### CREATING A LIST OF INDICATORS TO FILTER ###
-#     filtered_indicators = indicator_count[indicator_count < 217] #30
-#     filtered_indicators = filtered_indicators.index.to_list()
-#
-#     ### REMOVING UNNECESSARY COLUMNS ###
-#     drop_columns(df)
-#
-#     ### PIVOTING ###
-#     df = pivot(df)
-#     print(f' after pivoting {df.shape}')
-#
-#     ### FILTERING INDICATORS ###
-#     print("filtering")
-#     df.drop(columns=filtered_indicators, inplace=True, axis=1)
-#
-#     ### CHANGING "YEAR" COLUMN POSITION ###
-#     temp_cols = df.columns.tolist()
-#     new_cols = temp_cols[-1:] + temp_cols[:-1]
-#     df = df[new_cols]
-#
-#     ### DROPPING ROWS WITH NA VALUE ###
-#     print(f' after filtering {df.shape}')
-#     df = df.dropna()
-#     print(f' after dropna {df.shape}')
-#
-#     ### FILTERING CODE TO INDICATOR NAME DICTIONARY ###
-#     keys_to_delete = []
-#     for indicator_key in indicator_dict.keys():
-#         if indicator_key not in df.columns:
-#             keys_to_delete.append(indicator_key)
-#
-#     for key in keys_to_delete:
-#         del indicator_dict[key]
-#     print(indicator_dict)
-#
-#     ### CREATING A NEW FILE ###
-#     df.to_csv("pivot.csv")
-#
-#     ### CREATING HEATMAP OF CORRELATIONS ###
-#
-#     df = df.drop(columns="Year")
-#     # plt.figure(figsize=(15, 10))
-#     # sb.heatmap(df.corr(), cmap='coolwarm')
-#     #
-#     # plt.show()
-#     correlation_matrix = df.corr()
-#     for i in range(len(correlation_matrix.columns)):
-#         for j in range(i):
-#             if abs(correlation_matrix.iloc[i, j]) > 0.7 or abs(correlation_matrix.iloc[i, j]) < - 0.7:
-#                 print(f'{indicator_dict[correlation_matrix.columns[i]]} || {indicator_dict[correlation_matrix.columns[j]]} --> {correlation_matrix.iloc[i, j]}')
-#
-#     sb.boxplot()
 
 
 
@@ -126,7 +62,6 @@ if __name__=="__main__":
 
     ### CREATING CODE TO NAME DICTIONARY ###
     indicator_dict = indicator_code_2_name(df)
-
 
     ### REMOVING UNNECESSARY COLUMNS ###
     drop_columns(df)
