@@ -244,8 +244,7 @@ if __name__=="__main__":
 
     ## 171717171717171717171717171717117171717711717711717171
 
-    # COL_1, COL_2, COL_3 = "SE.PRM.TENR","SE.PRM.REPT.ZS", "Country Name" ## Adjusted net enrolment rate, primary, both sexes, and Percentage of repeaters in primary education, all grades, both sexes
-    # new_df = df[[COL_1, COL_2, COL_3]]
+    # COL_1, COL_2, COL_3 = "SE.PRM.TENR","SE.PRM.REPT.ZS", "Country Name" ## Comparison between India and China Unemployed
     # sns.scatterplot(x=COL_1, y=COL_2, data=new_df)
     # print(new_df[COL_1].corr(new_df[COL_2]))
     # # plt.xlabel("Total net enrolment rate, primary, both sexes (%")
@@ -255,3 +254,23 @@ if __name__=="__main__":
 
     ## 181818181818181818818181818181818181818181881818181818
 
+    # COL_1, COL_2, COL_3 = "SL.UEM.TOTL.ZS", "Year", "Country Name" ##"Comparison between India and China government's expenditure on education
+    # # india_yearly = df.loc[df["Country Name"] == "India",  [COL_2, COL_1]].dropna()
+    # india_yearly = df.loc[df["Country Name"].isin(["India", "China"]), [COL_2, COL_1, COL_3]].dropna()
+    # print(india_yearly)
+    # sns.barplot(x=COL_2, y=COL_1, data=india_yearly, hue="Country Name")
+    # plt.xlabel("Year")
+    # plt.ylabel("%")
+    # plt.title("Number of female enrollment in primary education in India year wise")
+    # plt.show()
+
+    ## 19191919191919191911919191911919191919191919919191919191
+    COL_1, COL_2, COL_3 = "UIS.LR.AG25T64", "Year", "Country Name" ##"Gross enrolment ratio, primary, female (%)"
+    # india_yearly = df.loc[df["Country Name"] == "India",  [COL_2, COL_1]].dropna()
+    india_yearly = df.loc[df["Country Name"].isin(["India", "China"]), [COL_2, COL_1, COL_3]].dropna()
+    print(india_yearly)
+    sns.barplot(x=COL_2, y=COL_1, data=india_yearly, hue="Country Name")
+    plt.xlabel("Year")
+    plt.ylabel("%")
+    plt.title("Number of female enrollment in primary education in India year wise")
+    plt.show()
