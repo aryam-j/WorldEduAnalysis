@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 def drop_columns(df, to_remove=[]):
     print("Dropping Columns...")
-    df.drop("Unnamed: 0", axis=1, inplace=True)
+    # df.drop("Unnamed: 0", axis=1, inplace=True)
     df.drop("Unnamed: 69", axis=1, inplace=True)
     df.drop("Indicator Name", axis=1, inplace=True)
     df.drop("Country Code", axis=1, inplace=True)
@@ -54,7 +54,7 @@ def indicator_code_2_name(df):
 if __name__=="__main__":
 
     ### LOADING THE DATA ###
-    ed_stats_data_path = r"C:\Users\aryam\OneDrive\Desktop\EdStatsData.csv"
+    ed_stats_data_path = r"C:\Users\aryam\OneDrive\Desktop\EDA\EdStatsData.csv"
     df = pd.read_csv(ed_stats_data_path)
 
     ### COUNTING THE FREQUENCY OF INDICATORS ###
@@ -64,6 +64,7 @@ if __name__=="__main__":
     indicator_dict = indicator_code_2_name(df)
 
     ### REMOVING UNNECESSARY COLUMNS ###
+    df.dropna(thresh=5, inplace=True)
     drop_columns(df)
 
     ### PIVOTING ###
@@ -97,8 +98,8 @@ if __name__=="__main__":
 
     ### CREATING HEATMAP OF CORRELATIONS ###
 
-    df = df.drop(columns="Year")
-
+    # df = df.drop(columns="Year")
+    #
     # correlation_matrix = df.corr(min_periods=50, numeric_only=True)  #
     # plt.figure(figsize=(15, 10))
     # sb.heatmap(df.corr(), cmap='coolwarm')
